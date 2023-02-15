@@ -1,3 +1,5 @@
+import { createLoadingOk } from './shopFunctions';
+
 export const fetchProduct = async () => {
 
 };
@@ -9,9 +11,10 @@ export const fetchProductsList = async (param) => {
   try {
     const URL = `https://api.mercadolibre.com/sites/MLB/search?q=${param}`;
     const response = await fetch(URL);
-    const data = response.json();
-    return data.then((result) => result.results);
+    const data = await response.json();
+    return data.results;
   } catch {
-    alert(Error.message);
+    const messageError = 'Algum erro ocorreu, recarregue a página e tente novamente';
+    return createLoadingOk('error', messageError);
   }
 };

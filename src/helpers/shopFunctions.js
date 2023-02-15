@@ -125,3 +125,12 @@ export const createProductElement = ({ id, title, thumbnail, price }) => {
 
   return section;
 };
+
+export const createLoadingOk = (className, textElement) => {
+  const container = document.querySelector('.container');
+  const text = document.createElement('p');
+  text.className = className;
+  text.innerHTML = textElement;
+  container.appendChild(text);
+  return text;
+};
