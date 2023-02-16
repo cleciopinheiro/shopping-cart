@@ -6,6 +6,17 @@ import { fetchProduct } from './fetchFunctions';
 
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 
+export const getTotalPrice = async () => {
+  const products = getSavedCartIDs();
+  const total = await products.reduce(async (acc, product) => {
+    const { price } = await fetchProduct(product);
+    return await acc + price;
+  }, 0);
+
+  const subTotal = document.querySelector('.total-price');
+  subTotal.innerText = total;
+};
+
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
  * @param {string} imageSource - URL da imagem.
@@ -49,6 +60,7 @@ export const getIdFromProduct = (product) => (
 const removeCartProduct = (li, id) => {
   li.remove();
   removeCartID(id);
+  getTotalPrice();
 };
 
 /**
@@ -87,6 +99,10 @@ export const createCartProductElement = ({ id, title, price, pictures }) => {
     'delete',
   );
   li.appendChild(removeButton);
+
+  removeButton.addEventListener('click', () => {
+    getTotalPrice();
+  });
 
   li.addEventListener('click', () => removeCartProduct(li, id));
   return li;
@@ -127,11 +143,12 @@ export const createProductElement = ({ id, title, thumbnail, price }) => {
   cartButton.addEventListener('click', async (event) => {
     const eventClick = event.target.parentNode;
     const productId = getIdFromProduct(eventClick);
+    saveCartID(productId);
+    getTotalPrice();
     const verify = await fetchProduct(productId);
     const elemento = createCartProductElement(verify);
     const main = document.querySelector('.cart__products');
     main.appendChild(elemento);
-    saveCartID(productId);
   });
   return section;
 };
