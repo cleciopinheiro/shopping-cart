@@ -22,10 +22,10 @@ const getProductApi = async () => {
   }
 };
 
+document.querySelector('.cep-button').addEventListener('click', searchCep);
+
 window.onload = async () => {
   await getProductApi();
   await getCartProducts();
   await getTotalPrice();
 };
-
-document.querySelector('.cep-button').addEventListener('click', searchCep);
